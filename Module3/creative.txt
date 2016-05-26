@@ -1,0 +1,8 @@
+Bradley Flynn
+438785
+
+http://54.200.100.56/Module3/homepage.php
+
+For the creative portion, I allowed users to reset their password if they forgot it!
+
+Create your username and have fun!

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Sign-In</title>
+</head>
+
+<body>
+	
+    <form action="signin.php" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username"/>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password"/>
+        <button type="submit" name="submit">Sign-In</button>
+    </form>
+	<p>
+		New user? <a href="signup.html">Create a new account here!</a>
+	</p>
+	<p>
+		For your password? We'll send you a link to reset! </p>
+		<form action="change.php" method="POST">
+			E-mail: <input type="text" name="email" size="20" /> <input type="submit" name="ForgotPassword" value=" Request Reset " />
+		</form>
+	
+</body>
+</html>

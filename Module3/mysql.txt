@@ -1,0 +1,61 @@
+CREATE TABLE students (
+id MEDIUMINT UNSIGNED NOT NULL,
+first_name VARCHAR(50) NOT NULL,
+last_name VARCHAR(50) NOT NULL,
+email_address VARCHAR(50) NOT NULL,
+PRIMARY KEY (id)
+engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+CREATE TABLE departments (
+school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+dept_id TINYINT UNSIGNED NOT NULL,
+abbreviation VARCHAR(9) NOT NULL,
+dept_name VARCHAR(200) NOT NULL,
+PRIMARY KEY (school_code, dept_id)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+CREATE TABLE courses (
+school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+dept_id TINYINT UNSIGNED NOT NULL,
+course_code CHAR(5) NOT NULL,
+name VARCHAR(150) NOT NULL,
+FOREIGN KEY (school_code, dept_id) REFERENCES departments (school_code, dept_id),
+PRIMARY KEY (school_code, dept_id, course_code)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+CREATE TABLE grades (
+pk_grade_ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+student_id MEDIUMINT UNSIGNED NOT NULL,
+grade DECIMAL(5,2) NOT NULL,
+school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+dept_id TINYINT UNSIGNED NOT NULL,
+course_code CHAR(5) NOT NULL,
+FOREIGN KEY (school_code, dept_id, course_code) REFERENCES courses (school_code, dept_id, course_code),
+FOREIGN KEY (student_id) REFERENCES students (id),
+PRIMARY KEY (pk_grade_ID)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+### ORDER MATTERS!!! ###
+LOAD DATA INFILE 'students.txt' INTO TABLE students;
+LOAD DATA INFILE 'departments.txt' INTO TABLE departments;
+LOAD DATA INFILE 'courses.txt' INTO TABLE courses;
+LOAD DATA INFILE 'grades.txt' INTO TABLE grades;
+
+### Computer Science and Engineering
+### school_code: E
+### dept_id: 81 
+### abbreviation: CSE
+
+INSERT INTO courses (school_code, dept_id, course_code, name) VALUES ('E', '81', '330S', 'Rapid Prototype Development and Creative Programming');
+
+INSERT INTO students (id, first_name, last_name, email_address) VALUES ('88', 'Ben', 'Harper', 'bharper@ffym.com'), ('202', 'Matt', 'Freeman', 'mfreeman@kickinbassist.net'), ('115','Marc','Roberge','mroberge@ofarevolution.us');
+
+INSERT INTO grades (student_id, grade, school_code, dept_id, course_code) VALUES ('88', '35.5', 'E', '81', '330S'), ('88', '0', 'E', '81', '400'), ('88', '95', 'L', '7', '151');
+INSERT INTO grades (student_id, grade, school_code, dept_id, course_code) VALUES ('202', '100', 'E', '81', '330S'), ('202', '90.5', 'F', '20', '111S'), ('202', '94.8', 'S', '20', '4011');
+INSERT INTO grades (student_id, grade, school_code, dept_id, course_code) VALUES ('115', '75', 'E', '81', '330S'), ('115', '37', 'S', '70', '5006'), ('115', '45.5', 'A', '46', '112');
+
+SELECT * FROM grades;
+SELECT * FROM courses WHERE school_code='L';
+SELECT first_name, last_name, id, grades.grade FROM students JOIN grades on (grades.student_id=students.id) WHERE (grades.course_code='330S');
+SELECT first_name, last_name, email_address, AVG(grades.grade) as AVGgrade FROM students JOIN grades on (grades.student_id=students.id) GROUP BY id HAVING AVGgrade < 50;
+SELECT id, email_address, AVG(grades.grade) as AVGgrade FROM students JOIN grades on (grades.student_id=students.id) WHERE first_name LIKE "J%";

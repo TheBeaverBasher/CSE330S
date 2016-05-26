@@ -1,0 +1,34 @@
+create database module3;
+
+create table users (
+id int unsigned not null auto_increment,
+crypted_password varchar(150) not null,
+name varchar(20) not null,
+email_address varchar(50) not null,
+joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+unique key index_name (name, email_address),
+primary key (id, name)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+create table stories (
+id int unsigned not null auto_increment,
+title varchar(50) not null,
+link text not null,
+userid int unsigned not null,
+username varchar(20) not null,
+foreign key (userid, username) references users (id, name),
+posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+primary key (id, title)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+create table comments (
+id bigint unsigned not null auto_increment,
+comment text not null,
+story int unsigned not null,
+userid int unsigned not null,
+username varchar(20) not null,
+foreign key (story) references stories (id),
+foreign key (userid, username) references users (id, name),
+posted TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+primary key (id, story, userid)
+) engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
