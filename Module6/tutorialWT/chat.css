@@ -1,0 +1,16 @@
+body {
+    background: #DCDCDC;
+    height: 90%;
+    width: 90%;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px; 
+}
+
+

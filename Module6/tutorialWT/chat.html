@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Let's Chat!</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="chat.css">
+    <script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script>
+		
+		
+		jQuery(function($){
+			var socket = io.connect();
+			
+			var $nameForm = $('#setName');
+			var $nameError = $('#nameError');
+			var $roomError = $('#roomError');
+			var $nameBox = $('#username');
+			var $users = $('#users');
+			var $rooms = $('#rooms');
+			var $messageForm = $('#send-message');
+			var $roomForm;
+			var $roomBox;
+			var $messageBox = $('#message');
+			var $chat = $('#chat');
+			var $currentRoom = $('#currentRoom');
+			var $someErr = $('#someErr');
+			
+			$('#contentWrap').hide();
+			
+			
+			$nameForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('new user', $nameBox.val(), function(data){
+					if(data){
+						$('#loginWrap').hide();
+						$('#contentWrap').show();
+					} else{
+						$nameError.html('That username is already in use!  Try again.');
+					}
+				});
+				$nameBox.val('');
+			});
+			
+			socket.on('current room', function(data){
+				$currentRoom.html('<h1>'+ data + '</h1>');	
+			});
+			
+			socket.on('usernames', function(data){
+				var html = '<h2>Users</h2>';
+				for (var i=0; i < data.length; i++) {
+					html += data[i] + '<br/>'
+				}
+				$users.html(html);
+			});
+			
+			socket.on('roomnames', function(data){
+				var html = '<h2>Rooms</h2>';
+				
+				function changeRoom(roomNum) {
+					socket.emit('change room', roomNum, function(data){
+						if (!data) {
+                            $someErr.html('You cannot Join this room!');
+                        }
+					});
+				}
+			
+				for (var i=0; i < data.length; i++) {
+					html += '<p id="'+ i + '" onclick="changeRoom(' + i + ')">' + data[i].name + '</p>';
+				}
+				html += '<form id="create-room"><input maxlength="16" id="roomname" placeholder="Create a Room!"></input> <input type="submit" value="Create"></input></form>';
+				$rooms.html(html);
+				$roomForm = $('#create-room');
+				$roomBox = $('#roomname');
+				
+				$roomForm.submit(function(e){
+					e.preventDefault();
+					socket.emit('new room', $roomBox.val(), function(data){
+						if(data){
+							
+						} else{
+							$roomError.html('That roomname is already in use!  Try again.');
+						}
+					});
+					$roomBox.val('');
+				});
+				
+				function changeRoom(roomNum) {
+					socket.emit('change room', roomNum, function(data){
+						if (!data) {
+                            $someErr.html('You cannot Join this room!');
+                        }
+					});
+				}
+			});
+			
+			
+			$messageForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('send message', $messageBox.val());
+				$messageBox.val('');
+			});
+			
+			socket.on('load old messages', function(docs){
+				for (var i=docs.length-1; i >= 0 ; i--) {
+					displayMessage(docs[i]);
+                }
+			});
+			
+			socket.on('new message', function(data){
+				displayMessage(data);
+			});
+			
+			function displayMessage(data) {
+                $chat.append("<em>" + data.user + ":</em>\t" + data.message + "<br/>");
+            }
+			
+			
+			$roomForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('new room', $roomBox.val(), function(data){
+					if(data){
+						
+					} else{
+						$roomError.html('That roomname is already in use!  Try again.');
+					}
+				});
+				$roomBox.val('');
+			});
+		
+		});
+	</script>
+</head>
+<body>
+	<div id="loginWrap">
+		<p>Enter a username:</p>
+		<p id="nameError"></p>
+		<form id="setName">
+			<input maxlength="16" id="username"></input>
+			<input type="submit"></input>
+		</form>
+	</div>
+
+	<div class="row" id="contentWrap">
+		<header><center><div id="currentRoom"></div></center></header>
+		<div class="col-sm-3" id="users"></div>
+		<div class="col-sm-6" id="chatWrap">
+			<div id="chat"></div>
+			<footer><center>
+				<form id="send-message">
+					<input maxlength="200" id="message" placeholder="Type here..."></input>
+					<input type="submit" value="Send"></input>
+				</form>
+			</center></footer>
+			<div id="someErr"></div>
+		</div>
+		<div class="col-sm-3" id="rooms"><p id="roomError"></p></div>
+	</div>
+	
+</body>
+</html>
