@@ -1,0 +1,20 @@
+h2
+  a(href='post.link') {{post.title}} 
+p There are {{post.comments.length}} comments
+div(ng-repeat='comment in post.comments')
+  h3
+    {{comment.text}}  
+  div
+  | Submitted by
+  a(href='user/{{comment.uid}}') {{comment.username}}
+  |  - on {{comment.submitted}}
+  br
+  |  -   
+  a(href='editComment/{{comment.id}}') Edit
+  |  - 
+  a(href='deleteComment/{{comment.id}}') Delete
+
+label(for='comment') Submit your comment:
+input(ng-model='form.text', name='comment')
+p
+  button(ng-click='submitComment()') Submit Post
