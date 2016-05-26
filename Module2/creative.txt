@@ -1,0 +1,18 @@
+Student Name	Student ID
+Bradley Flynn	438785
+
+http://54.200.100.56/Module2/homepage.html
+
+For the creative portion, I set up a cronjob to
+sync the contents in the other users' folders
+into the admin folder. I still need to find out ways
+for the admin to have the ablity to delete the 
+source files. So as of now, if you upload a file 
+to your user folder, you'll find it in the 
+admin folder as well.
+ 
+The users for this site are:
+	bflynn
+	cse330
+	guest
+	admin
