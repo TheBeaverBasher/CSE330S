@@ -1,0 +1,24 @@
+create database module5;
+
+CREATE TABLE users (
+id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+name VARCHAR(50) NOT NULL,
+crypted_password VARCHAR(150) NOT NULL,
+email_address VARCHAR(50) NOT NULL,
+joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+UNIQUE KEY INDEX_NAME (name, email_address),
+PRIMARY KEY (id, name)
+)engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+
+CREATE TABLE events (
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+title VARCHAR(50) NOT NULL,
+start DATETIME NOT NULL, 
+end DATETIME DEFAULT NULL,
+tag ENUM('work', 'school', 'social', 'fitness', 'none') DEFAULT 'none',
+username VARCHAR(50) NOT NULL,
+FOREIGN KEY (username) REFERENCES users (name),
+created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (id, title)
+)engine = INNODB DEFAULT character SET = utf8 COLLATE = utf8_general_ci;
+

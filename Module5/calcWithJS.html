@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>JS Calculator</title>
+    <meta charset="utf-8"/>
+    <script type="text/javascript">
+        function calculate(opt) {
+            var num1 = parseFloat(document.getElementById("num1").value);
+            var num2 = parseFloat(document.getElementById("num2").value);
+            var ans;
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                ans = "You're missing a number!";
+            }
+            else if (opt == "") {
+                ans = "Select an operation!"
+            }
+            else{
+                switch (opt) {
+                case "add":
+                    ans = num1 + num2;
+                    break;
+                case "sub":
+                    ans = num1 - num2;
+                    break;
+                case "mul":
+                    ans = num1 * num2;
+                    break;
+                case "div":
+                    if (num2 == 0) {
+                        ans = "You can't divide by zero!";
+                    }
+                    else{
+                        ans = num1 / num2;
+                    }
+                    break;
+                }
+            }
+            
+            document.getElementById("answer").value = ans;
+        }
+    </script>
+</head>
+
+<body>
+    
+    <form name="calc">
+        <input type="number" step="any" id="num1" onkeyup="calculate(opt.value)"/><br>
+        <input type="radio" name="opt" onclick="calculate(this.value)" value="add">+
+        <input type="radio" name="opt" onclick="calculate(this.value)" value="sub">-
+        <input type="radio" name="opt" onclick="calculate(this.value)" value="mul">*
+        <input type="radio" name="opt" onclick="calculate(this.value)" value="div">/<br>
+        <input type="number" step="any" id="num2" onkeyup="calculate(opt.value)"/>
+        <br><br>
+        Your answer: <br>
+        <input type="text" id="answer">
+    </form>
+
+</body>
+</html>
