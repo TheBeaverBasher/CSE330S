@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--54.200.100.56/path/to/file-->
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Add Pet Listing</title>
+	</head>
+	<body>
+		<h1>
+			Add New Pet
+		</h1>
+		<p>
+			Explain to the user on how to enter in the detail about their pet
+		</p>
+		<form action="pet-submit.php" method="POST" enctype="multipart/form-data">
+			<input type="text" name="name" />
+			<select name="species">
+				<option value="cat">cat</option>
+				<option value="dog">dog</option>
+				<option value="fish">fish</option>
+				<option value="bird">bird</option>
+				<option value="hamster">hamster</option>
+			</select>
+			<input type="number" step="any" min="0" name="weight" />
+			<textarea rows="4" cols="50" name="description">Enter description here...</textarea>
+			<input type="file" name="picture" accept="image/*" />
+			<input type="submit" value="Submit"/>
+		</form>
+	</body>
+</html>
