@@ -1,0 +1,16 @@
+<b>Reviews for {{currentCoffee.name}}</b>
+<table>
+    <tr><b>
+        <td>Reviewer:</td>
+        <td>Comment:</td>
+        <td>Rating:</td>
+    </b></tr>
+    <tr ng-repeat="review in currentCoffee.reviews">
+        <td>{{review.reviewer}}</td>
+        <td>{{review.comment}}</td>
+        <td>
+        <uib-rating ng-model="review.rating" max="10" read-only="true" aria-labelledby="custom-icons-1"></uib-rating>
+        {{review.rating}}
+        </td>
+    </tr>
+</table>

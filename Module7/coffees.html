@@ -1,0 +1,19 @@
+Search: <input ng-model="query">
+<table>
+    <tr><b>
+        <td>Reviews:</td>
+        <td>Brand:</td>
+        <td>Coffee Title:</td>
+        <td>Country:</td>
+    </b></tr>
+    <tr ng-repeat="coffee in coffees | filter:query | orderBy:orderProp">
+        <td>
+            <a class="btn btn-primary" href="#/reviews/{{coffee.id}}">
+            Reviews
+            </a>
+        </td>
+        <td>{{coffee.brand}}</td>
+        <td>{{coffee.name}}</td>
+        <td>{{coffee.country}}</td>
+    </tr>
+</table>
